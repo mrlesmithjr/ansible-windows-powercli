@@ -49,6 +49,13 @@
   win_shell: Install-Module -Name VMware.PowerCLI –Force
   when: _powercli_module['rc'] != 0
 
+- name: Disable Invalid Cert Warning For PowerCLI
+  win_shell: Set-PowerCLIConfiguration -InvalidCertificateAction ignore -confirm:$false
+  when: windows_powercli_disable_invalid_cert_warning
+
+- name: Manage PowerCLI Customer Experience Improvement Program
+  win_shell: "Set-PowerCLIConfiguration -ParticipateInCeip ${{ window_powercli_customer_experience_improvement_program|lower }} -confirm:$false"
+
 - name: Rebooting Server
   win_reboot:
     shutdown_timeout: 3600
